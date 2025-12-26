@@ -1,0 +1,65 @@
+<view class="analysis-container">
+  <view class="analysis-content">
+    <!-- 情绪标签区 -->
+    <view class="emotion-tags" wx:if="{{emotions.length > 0}}">
+      <view class="tag-title">你的情绪</view>
+      <view class="tags-list">
+        <view class="emotion-tag" wx:for="{{emotions}}" wx:key="index">
+          <text class="tag-emoji">{{item.emoji}}</text>
+          <text class="tag-label">{{item.label}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 情绪来源解释 -->
+    <view class="reasons-section">
+      <view class="section-title">可能让你难受的原因</view>
+      <view class="reasons-list">
+        <!-- 大模型生成的原因（只读） -->
+        <view class="reason-item" wx:for="{{reasons}}" wx:key="index">
+          <text class="reason-dot">·</text>
+          <text class="reason-text">{{item}}</text>
+        </view>
+        <!-- 用户自己添加的原因 -->
+        <view class="reason-item user-reason" wx:for="{{userReasons}}" wx:key="index">
+          <text class="reason-dot">·</text>
+          <text class="reason-text">{{item}}</text>
+          <text class="delete-btn" bindtap="deleteUserReason" data-index="{{index}}">×</text>
+        </view>
+        <!-- 添加自定义原因输入框 -->
+        <!-- <view class="custom-reason-wrapper">
+          <view class="custom-reason-input">
+            <view class="input-icon">✍️</view>
+            <input 
+              class="reason-input"
+              value="{{customReasonInput}}"
+              placeholder="你也可以描述自己的原因..."
+              bindinput="onCustomReasonInput"
+              bindconfirm="addCustomReason"
+              maxlength="100"
+            />
+          </view>
+          <view class="add-btn-wrapper">
+            <button class="add-btn {{customReasonInput.trim() ? 'active' : ''}}" bindtap="addCustomReason" disabled="{{!customReasonInput.trim()}}">
+              <text class="add-icon">+</text>
+              <text class="add-text">添加</text>
+            </button>
+          </view>
+        </view> -->
+      </view>
+    </view>
+
+    <!-- 非自责澄清 -->
+    <view class="clarification-section" wx:if="{{clarification}}">
+      <view class="clarification-box">
+        <text class="clarification-text">{{clarification}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="analysis-footer">
+    <button class="next-btn" bindtap="nextTap">我想知道接下来怎么做</button>
+    <view class="analysis-hint">这些只是可能的原因，你的感受是真实的</view>
+  </view>
+</view>
+

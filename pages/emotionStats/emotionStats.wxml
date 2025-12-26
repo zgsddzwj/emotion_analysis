@@ -1,0 +1,71 @@
+<view class="stats-container">
+  <view class="stats-content">
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{isEmpty}}">
+      <view class="empty-icon">📊</view>
+      <view class="empty-title">还没有情绪记录</view>
+      <view class="empty-text">开始记录你的情绪，这里会显示你的情绪分布</view>
+      <button class="empty-btn" bindtap="goToIndex">去记录情绪</button>
+    </view>
+
+    <!-- 有数据时的内容 -->
+    <view class="stats-main" wx:else>
+      <!-- 统计概览 -->
+      <view class="overview-section">
+        <view class="overview-card">
+          <view class="overview-icon">📝</view>
+          <view class="overview-content">
+            <text class="overview-label">总记录数</text>
+            <text class="overview-value">{{totalRecords}}</text>
+          </view>
+        </view>
+        <view class="overview-card">
+          <view class="overview-icon">💭</view>
+          <view class="overview-content">
+            <text class="overview-label">情绪种类</text>
+            <text class="overview-value">{{emotionStats.length}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 情绪分布列表 -->
+      <view class="emotion-list-section">
+        <view class="section-title">
+          <text class="title-text">情绪分布</text>
+          <text class="title-hint">按出现频率排序</text>
+        </view>
+
+        <view class="emotion-list">
+          <view class="emotion-item" wx:for="{{emotionStats}}" wx:key="label">
+            <view class="emotion-header">
+              <view class="emotion-info">
+                <text class="emotion-emoji">{{item.emoji}}</text>
+                <text class="emotion-label">{{item.label}}</text>
+              </view>
+              <view class="emotion-count">{{item.count}}次</view>
+            </view>
+            <view class="emotion-bar-wrapper">
+              <view class="emotion-bar">
+                <view class="emotion-bar-fill" style="width: {{item.percentage}}%"></view>
+              </view>
+              <text class="emotion-percentage">{{item.percentage}}%</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 温馨提示 -->
+      <view class="hint-section">
+        <view class="hint-card">
+          <text class="hint-icon">💚</text>
+          <text class="hint-text">情绪没有好坏之分，它们都是你内心的信号</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="stats-footer">
+    <button class="back-btn" bindtap="goBack">返回</button>
+  </view>
+</view>
+

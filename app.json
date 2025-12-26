@@ -1,0 +1,23 @@
+{
+  "pages": [
+    "pages/splash/splash",
+    "pages/index/index",
+    "pages/analysis/analysis",
+    "pages/action/action",
+    "pages/history/history",
+    "pages/detail/detail",
+    "pages/emotionStats/emotionStats"
+  ],
+  "window": {
+    "navigationBarTitleText": "缓一下",
+    "navigationBarBackgroundColor": "#FAF8F5",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#FAF8F5",
+    "backgroundTextStyle": "light",
+    "enablePullDownRefresh": false,
+    "navigationStyle": "default"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}
+

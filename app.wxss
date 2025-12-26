@@ -1,0 +1,67 @@
+/* 全局样式 */
+page {
+  background-color: #FAF8F5;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  color: #333;
+  line-height: 1.6;
+  box-sizing: border-box;
+}
+
+/* 通用容器 */
+.container {
+  min-height: 100vh;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* 通用按钮样式 */
+.btn-primary {
+  background-color: #E8D5C4;
+  color: #5C4A3A;
+  border: none;
+  border-radius: 24px;
+  padding: 20rpx 60rpx;
+  font-size: 32rpx;
+  font-weight: 500;
+  margin: 40rpx auto;
+  display: block;
+  width: 80%;
+  max-width: 500rpx;
+}
+
+.btn-primary:active {
+  background-color: #D4C4B0;
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: #8B7355;
+  border: 1px solid #E8D5C4;
+  border-radius: 24px;
+  padding: 16rpx 50rpx;
+  font-size: 28rpx;
+  margin: 20rpx auto;
+  display: block;
+  width: 70%;
+  max-width: 400rpx;
+}
+
+/* 通用文本样式 */
+.text-primary {
+  color: #5C4A3A;
+  font-size: 36rpx;
+  line-height: 1.8;
+}
+
+.text-secondary {
+  color: #8B7355;
+  font-size: 28rpx;
+  line-height: 1.6;
+}
+
+.text-small {
+  color: #A69B8C;
+  font-size: 24rpx;
+  line-height: 1.5;
+}
+

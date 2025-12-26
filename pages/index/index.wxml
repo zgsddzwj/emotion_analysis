@@ -1,0 +1,72 @@
+<view class="index-container">
+  <view class="index-header">
+    <view class="welcome-card">
+      <view class="welcome-icon">🌿</view>
+      <view class="welcome-content">
+        <text class="welcome-title">这里可以接住你的情绪</text>
+        <text class="welcome-subtitle">不评判 · 不记录隐私 · 不说教</text>
+      </view>
+    </view>
+    <view class="history-link" bindtap="goToHistory" wx:if="{{hasHistory}}">
+      <text class="history-link-text">📝 查看记录</text>
+    </view>
+  </view>
+
+
+  <!-- 非情绪内容提醒 -->
+  <view class="reminder-section" wx:if="{{showReminder}}">
+    <view class="reminder-card">
+      <view class="reminder-content">
+        <text class="reminder-icon">💬</text>
+        <text class="reminder-text">{{reminderMessage}}</text>
+      </view>
+      <view class="reminder-close" bindtap="closeReminder">
+        <text class="close-icon">×</text>
+      </view>
+    </view>
+  </view>
+  
+  <view class="input-section">
+    <view class="input-wrapper">
+      <view class="input-label">
+        <text class="label-icon">✍️</text>
+        <text class="label-text">说说你的感受</text>
+      </view>
+      <view class="textarea-wrapper">
+        <textarea 
+          class="emotion-input" 
+          placeholder=""
+          value="{{inputText}}"
+          bindinput="onInput"
+          maxlength="500"
+          auto-focus="{{false}}"
+          show-confirm-bar="{{false}}"
+          auto-height="{{false}}"
+        ></textarea>
+        <view class="custom-placeholder" wx:if="{{!inputText}}">
+          <text class="placeholder-line">最近让我最难受的是……</text>
+          <text class="placeholder-line">今天发生了一件让我……的事</text>
+          <text class="placeholder-line">我最近总是感到……</text>
+        </view>
+      </view>
+      <view class="input-footer">
+        <text class="char-count">{{inputText.length}}/500</text>
+      </view>
+    </view>
+  </view>
+  
+  <view class="index-footer">
+    <button 
+      class="submit-btn {{inputText.length > 0 && !isAnalyzing ? 'active' : ''}}" 
+      bindtap="submitTap"
+      disabled="{{inputText.length === 0 || isAnalyzing}}"
+      loading="{{isAnalyzing}}"
+    >
+      {{isAnalyzing ? '正在分析...' : '我说完了'}}
+    </button>
+    <view class="footer-hint" wx:if="{{!inputText}}">
+      <text class="hint-text">💚 你的感受值得被看见</text>
+    </view>
+  </view>
+</view>
+

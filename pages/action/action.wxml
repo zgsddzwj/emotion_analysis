@@ -1,0 +1,45 @@
+<view class="action-container">
+  <view class="action-content">
+    <!-- 安抚性开场语 -->
+    <view class="comfort-section" wx:if="{{comfortText}}">
+      <view class="comfort-card">
+        <text class="comfort-text">{{comfortText}}</text>
+      </view>
+    </view>
+
+    <!-- 微行动卡片 -->
+    <view class="actions-section" wx:if="{{actions.length > 0}}">
+      <view 
+        class="action-card {{item.isCompleted ? 'completed' : ''}}" 
+        wx:for="{{actions}}" 
+        wx:key="index"
+        wx:for-item="item"
+        wx:for-index="idx"
+        bindtap="completeAction"
+        data-index="{{idx}}"
+      >
+        <view class="action-emoji-wrapper {{item.isCompleted ? 'completed' : ''}}">
+          <text class="action-emoji">{{item.emoji}}</text>
+        </view>
+        <text class="action-text">{{item.text}}</text>
+      </view>
+    </view>
+
+    <!-- 结束语 -->
+    <view class="ending-section">
+      <text class="ending-text">今天做到其中一条就够了</text>
+      <view class="selected-count-hint" wx:if="{{completedCount > 0}}">
+        <text class="hint-text">{{selectedCountText}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="action-footer">
+    <button class="regenerate-btn" bindtap="regenerateTap" loading="{{isRegenerating}}" disabled="{{isRegenerating}}">
+      {{isRegenerating ? '重新生成...' : '🔄 重新生成'}}
+    </button>
+    <button class="know-btn" bindtap="knowTap">我知道了</button>
+    <button class="record-btn" bindtap="recordTap">记录下来</button>
+  </view>
+</view>
+

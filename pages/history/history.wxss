@@ -1,0 +1,257 @@
+.history-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 40rpx 40rpx 30rpx;
+  padding-top: calc(40rpx + constant(safe-area-inset-top));
+  padding-top: calc(40rpx + env(safe-area-inset-top));
+  padding-bottom: calc(30rpx + constant(safe-area-inset-bottom));
+  padding-bottom: calc(30rpx + env(safe-area-inset-bottom));
+  box-sizing: border-box;
+  background-color: #faf8f5;
+  overflow-y: auto;
+}
+
+.history-content {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* 趋势提示 */
+.trend-section {
+  background-color: #fff8f0;
+  border-radius: 12rpx;
+  padding: 24rpx 30rpx;
+  margin-bottom: 30rpx;
+  border-left: 6rpx solid #e8d5c4;
+}
+
+.trend-text {
+  display: block;
+  font-size: 28rpx;
+  color: #5c4a3a;
+  line-height: 1.6;
+  margin-bottom: 8rpx;
+}
+
+.trend-direction {
+  display: block;
+  font-size: 24rpx;
+  color: #8b7355;
+  line-height: 1.5;
+  margin-top: 8rpx;
+}
+
+/* 情绪统计 */
+.stats-section {
+  background-color: #ffffff;
+  border-radius: 12rpx;
+  padding: 24rpx 30rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+  border: 1px solid #f0e8dd;
+}
+
+.stats-title {
+  font-size: 28rpx;
+  color: #5c4a3a;
+  font-weight: 500;
+  margin-bottom: 20rpx;
+}
+
+.stats-section {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.stats-section:active {
+  transform: scale(0.98);
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
+}
+
+.stats-hint {
+  margin-top: 20rpx;
+  padding-top: 20rpx;
+  border-top: 1px solid rgba(232, 213, 196, 0.3);
+  text-align: center;
+}
+
+.hint-text {
+  font-size: 24rpx;
+  color: #a69b8c;
+}
+
+.stats-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.stat-label {
+  font-size: 26rpx;
+  color: #5c4a3a;
+  min-width: 80rpx;
+}
+
+.stat-bar {
+  flex: 1;
+  height: 12rpx;
+  background-color: #f0e8dd;
+  border-radius: 6rpx;
+  overflow: hidden;
+  position: relative;
+}
+
+.stat-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #e8d5c4 0%, #d4c4b0 100%);
+  border-radius: 6rpx;
+  transition: width 0.3s ease;
+}
+
+.stat-count {
+  font-size: 24rpx;
+  color: #8b7355;
+  min-width: 60rpx;
+  text-align: right;
+}
+
+/* 记录列表 */
+.records-section {
+  margin-bottom: 40rpx;
+}
+
+.record-item {
+  background-color: #ffffff;
+  border-radius: 12rpx;
+  padding: 24rpx 30rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+  border: 1px solid #f0e8dd;
+  transition: all 0.3s ease;
+}
+
+.record-item:active {
+  transform: scale(0.98);
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
+  background-color: #faf8f5;
+}
+
+.record-item:last-child {
+  margin-bottom: 0;
+}
+
+.record-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16rpx;
+}
+
+.record-time-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+}
+
+.record-date {
+  font-size: 28rpx;
+  color: #8b7355;
+  font-weight: 500;
+}
+
+.record-time {
+  font-size: 24rpx;
+  color: #a69b8c;
+}
+
+.record-emotions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.record-emotion-tag {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  background-color: #faf8f5;
+  padding: 8rpx 16rpx;
+  border-radius: 12rpx;
+}
+
+.emotion-emoji-small {
+  font-size: 24rpx;
+}
+
+.emotion-label-small {
+  font-size: 22rpx;
+  color: #5c4a3a;
+}
+
+.record-text {
+  font-size: 28rpx;
+  color: #5c4a3a;
+  line-height: 1.6;
+  margin-top: 16rpx;
+  padding-top: 16rpx;
+  border-top: 1px solid #f0e8dd;
+}
+
+.record-detail-hint {
+  font-size: 24rpx;
+  color: #a69b8c;
+  margin-top: 12rpx;
+  text-align: right;
+}
+
+/* 空状态 */
+.empty-state {
+  text-align: center;
+  padding: 120rpx 40rpx;
+}
+
+.empty-text {
+  display: block;
+  font-size: 32rpx;
+  color: #8b7355;
+  margin-bottom: 16rpx;
+}
+
+.empty-hint {
+  display: block;
+  font-size: 26rpx;
+  color: #a69b8c;
+}
+
+.history-footer {
+  width: 100%;
+  padding-top: 20rpx;
+  flex-shrink: 0;
+}
+
+.back-btn {
+  background-color: #e8d5c4;
+  color: #5c4a3a;
+  border: none;
+  border-radius: 24px;
+  padding: 24rpx 60rpx;
+  font-size: 32rpx;
+  font-weight: 500;
+  width: 80%;
+  max-width: 500rpx;
+  margin: 0 auto;
+}
+
+.back-btn:active {
+  background-color: #d4c4b0;
+}

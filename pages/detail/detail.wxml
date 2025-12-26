@@ -1,0 +1,78 @@
+<view class="detail-container">
+  <view class="detail-content">
+    <!-- 时间信息 -->
+    <view class="time-section">
+      <view class="time-card">
+        <text class="time-label">记录时间</text>
+        <text class="time-value">{{record.date}} {{record.time}}</text>
+      </view>
+    </view>
+
+    <!-- 用户输入 -->
+    <view class="input-section">
+      <view class="section-title">你的输入</view>
+      <view class="input-card">
+        <text class="input-text">{{record.fullText || record.text}}</text>
+      </view>
+    </view>
+
+    <!-- 情绪标签 -->
+    <view class="emotions-section" wx:if="{{record.analysis && record.analysis.emotions.length > 0}}">
+      <view class="section-title">情绪标签</view>
+      <view class="emotions-list">
+        <view class="emotion-tag" wx:for="{{record.analysis.emotions}}" wx:key="index">
+          <text class="tag-emoji">{{item.emoji}}</text>
+          <text class="tag-label">{{item.label}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 原因分析 -->
+    <view class="reasons-section" wx:if="{{record.analysis && record.analysis.allReasons.length > 0}}">
+      <view class="section-title">可能的原因</view>
+      <view class="reasons-card">
+        <view class="reason-item" wx:for="{{record.analysis.allReasons}}" wx:key="index">
+          <text class="reason-dot">·</text>
+          <text class="reason-text">{{item}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 非自责澄清 -->
+    <view class="clarification-section" wx:if="{{record.analysis && record.analysis.clarification}}">
+      <view class="section-title">不是你的问题</view>
+      <view class="clarification-card">
+        <text class="clarification-text">{{record.analysis.clarification}}</text>
+      </view>
+    </view>
+
+    <!-- 行动建议 -->
+    <view class="actions-section" wx:if="{{record.completedActionsList && record.completedActionsList.length > 0}}">
+      <view class="section-title">你选择的行动</view>
+      <view class="actions-list">
+        <view class="action-item completed" wx:for="{{record.completedActionsList}}" wx:key="originalIndex">
+          <view class="action-left">
+            <text class="action-emoji">{{item.emoji}}</text>
+            <text class="action-text">{{item.text}}</text>
+          </view>
+          <view class="action-check">
+            <text class="check-icon">✓</text>
+            <text class="check-label">已完成</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 安抚语 -->
+    <view class="comfort-section" wx:if="{{record.analysis && record.analysis.comfortText}}">
+      <view class="comfort-card">
+        <text class="comfort-text">{{record.analysis.comfortText}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="detail-footer">
+    <button class="back-btn" bindtap="backTap">返回</button>
+  </view>
+</view>
+
