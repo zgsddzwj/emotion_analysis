@@ -3,35 +3,40 @@
  * 支持多种接入方式：微信云开发、直接API调用、后端代理
  */
 
-// 配置信息（请根据实际情况修改）
+// 从配置文件读取配置
+const appConfig = require("./config");
+
+// 配置信息（从 config.js 读取）
 const CONFIG = {
   // 接入方式：'cloud' | 'direct' | 'proxy'
-  mode: "cloud", // 默认使用云开发
+  mode: appConfig.llmMode || "cloud",
 
   // 云开发配置（mode === 'cloud' 时使用）
   cloud: {
-    functionName: "emotionAnalysis", // 云函数名称
+    functionName: appConfig.cloud?.functionName || "emotionAnalysis",
   },
 
   // 直接API配置（mode === 'direct' 时使用，需要配置合法域名）
   direct: {
-    // 示例：通义千问API
     apiUrl:
-      "https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation",
-    apiKey: "", // 请在此填入你的API Key
+      appConfig.directAPI?.apiUrl ||
+      "https://api.deepseek.com/v1/chat/completions",
+    apiKey: appConfig.directAPI?.apiKey || "", // 从 config.js 或 config.local.js 读取
   },
 
   // 后端代理配置（mode === 'proxy' 时使用）
   proxy: {
-    apiUrl: "https://your-backend.com/api/emotion-analysis", // 你的后端API地址
+    apiUrl:
+      appConfig.proxyAPI?.apiUrl ||
+      "https://your-backend.com/api/emotion-analysis",
   },
 
   // 模型配置
   model: {
-    provider: "qwen", // 'qwen' | 'openai' | 'custom'
-    modelName: "qwen-turbo", // 模型名称
-    temperature: 0.7,
-    maxTokens: 1000,
+    provider: appConfig.model?.provider || "openai",
+    modelName: appConfig.model?.modelName || "deepseek-chat",
+    temperature: appConfig.model?.temperature || 0.7,
+    maxTokens: appConfig.model?.maxTokens || 1000,
   },
 };
 
@@ -111,15 +116,16 @@ function callDirectAPI(userText) {
   return new Promise((resolve, reject) => {
     const prompt = buildPrompt(userText);
 
-    wx.request({
-      url: CONFIG.direct.apiUrl,
-      method: "POST",
-      header: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${CONFIG.direct.apiKey}`,
-        "X-DashScope-SSE": "disable",
-      },
-      data: {
+    // 根据provider选择不同的请求格式
+    let requestData;
+    let headers = {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${CONFIG.direct.apiKey}`,
+    };
+
+    if (CONFIG.model.provider === "qwen") {
+      // 通义千问格式
+      requestData = {
         model: CONFIG.model.modelName,
         input: {
           messages: [
@@ -133,7 +139,28 @@ function callDirectAPI(userText) {
           temperature: CONFIG.model.temperature,
           max_tokens: CONFIG.model.maxTokens,
         },
-      },
+      };
+      headers["X-DashScope-SSE"] = "disable";
+    } else {
+      // OpenAI/DeepSeek格式
+      requestData = {
+        model: CONFIG.model.modelName,
+        messages: [
+          {
+            role: "user",
+            content: prompt,
+          },
+        ],
+        temperature: CONFIG.model.temperature,
+        max_tokens: CONFIG.model.maxTokens,
+      };
+    }
+
+    wx.request({
+      url: CONFIG.direct.apiUrl,
+      method: "POST",
+      header: headers,
+      data: requestData,
       success: (res) => {
         console.log("📡 API完整响应:", JSON.stringify(res, null, 2));
         if (res.statusCode === 200 && res.data) {
@@ -168,8 +195,11 @@ function callDirectAPI(userText) {
             err.errMsg.includes("url not in domain list") ||
             err.errMsg.includes("不在以下 request 合法域名列表中")
           ) {
-            errorMsg =
-              "域名未配置：请在小程序后台配置合法域名 dashscope.aliyuncs.com，或使用云开发方式";
+            const domain =
+              CONFIG.model.provider === "qwen"
+                ? "dashscope.aliyuncs.com"
+                : "api.deepseek.com";
+            errorMsg = `域名未配置：请在小程序后台配置合法域名 ${domain}，或使用云开发方式`;
           } else if (err.errMsg.includes("fail")) {
             errorMsg = `请求失败: ${err.errMsg}，请检查网络连接`;
           } else {

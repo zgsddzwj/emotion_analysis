@@ -1,0 +1,43 @@
+/**
+ * 本地配置文件示例
+ * 
+ * ⚠️ 重要：
+ * 1. 复制此文件为 config.local.js
+ * 2. 填入你的实际配置信息
+ * 3. config.local.js 不会被提交到 Git
+ * 
+ * 使用方法：
+ * cp utils/config.local.js.example utils/config.local.js
+ * 然后编辑 utils/config.local.js 填入实际值
+ */
+
+module.exports = {
+  // 云开发配置
+  cloud: {
+    env: "your-cloud-env-id", // 填入你的云开发环境ID
+  },
+
+  // 直接API配置（仅在 direct 模式下使用）
+  directAPI: {
+    // DeepSeek API
+    apiUrl: "https://api.deepseek.com/v1/chat/completions",
+    apiKey: "your-deepseek-api-key-here", // ⬅️ 填入你的 DeepSeek API Key
+
+    // 或者使用通义千问
+    // apiUrl: "https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation",
+    // apiKey: "your-qwen-api-key-here",
+
+    // 或者使用 OpenAI
+    // apiUrl: "https://api.openai.com/v1/chat/completions",
+    // apiKey: "your-openai-api-key-here",
+  },
+
+  // 模型配置（可选，会覆盖默认配置）
+  // model: {
+  //   provider: "openai",
+  //   modelName: "deepseek-chat",
+  //   temperature: 0.9,
+  //   maxTokens: 1500,
+  // },
+};
+

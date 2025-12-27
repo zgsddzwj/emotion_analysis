@@ -15,22 +15,29 @@ cloud.init({
 });
 
 // 配置你的大模型API
-// ⚠️ 重要：请在此填入你的百炼平台API Key
+// ⚠️ 重要：API Key 从环境变量读取，请在云开发控制台配置环境变量
+// 环境变量配置路径：云开发控制台 -> 云函数 -> emotionAnalysis -> 环境变量
 const LLM_CONFIG = {
-  // 百炼平台（通义千问）配置
-  provider: "qwen", // 'qwen' | 'openai' | 'custom'
+  // DeepSeek配置（从环境变量读取，如果没有则使用默认值）
+  provider: process.env.MODEL_PROVIDER || "openai", // DeepSeek使用OpenAI兼容格式
   apiUrl:
-    "https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation",
-  apiKey: "sk-1b9f583964144fe1973bd6eed4082b51", // ⬅️ 请在此填入你的百炼平台API Key
+    process.env.DEEPSEEK_API_URL ||
+    "https://api.deepseek.com/v1/chat/completions",
+  apiKey: process.env.DEEPSEEK_API_KEY || "", // ⬅️ 从环境变量 DEEPSEEK_API_KEY 读取
+
+  // 百炼平台（通义千问）配置示例
+  // provider: process.env.MODEL_PROVIDER || "qwen",
+  // apiUrl: process.env.QWEN_API_URL || "https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation",
+  // apiKey: process.env.QWEN_API_KEY || "",
 
   // OpenAI配置示例
-  // provider: 'openai',
-  // apiUrl: 'https://api.openai.com/v1/chat/completions',
-  // apiKey: '',
+  // provider: process.env.MODEL_PROVIDER || "openai",
+  // apiUrl: process.env.OPENAI_API_URL || "https://api.openai.com/v1/chat/completions",
+  // apiKey: process.env.OPENAI_API_KEY || "",
 
-  model: "qwen-max", // 模型名称，可选：qwen-turbo, qwen-plus, qwen-max
-  temperature: 0.9, // 提高温度值，增加生成内容的多样性和随机性
-  maxTokens: 1000,
+  model: process.env.MODEL_NAME || "deepseek-chat", // 从环境变量读取模型名称
+  temperature: parseFloat(process.env.MODEL_TEMPERATURE || "0.9"), // 从环境变量读取温度值
+  maxTokens: parseInt(process.env.MODEL_MAX_TOKENS || "1000"), // 从环境变量读取最大token数
 };
 
 exports.main = async (event, context) => {

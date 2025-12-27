@@ -8,6 +8,10 @@ yarn-error.log*
 project.private.config.json
 *.log
 
+# 环境变量和敏感配置
+.env
+config.local.js
+
 # 系统文件
 .DS_Store
 Thumbs.db
