@@ -114,6 +114,19 @@ function callCloudFunction(userText) {
  */
 function callDirectAPI(userText) {
   return new Promise((resolve, reject) => {
+    // 检查 API Key 是否配置
+    if (!CONFIG.direct.apiKey || CONFIG.direct.apiKey.trim() === "") {
+      const errorMsg =
+        "API Key 未配置！\n\n" +
+        "请按以下步骤配置：\n" +
+        "1. 复制配置文件：cp utils/config.local.js.example utils/config.local.js\n" +
+        "2. 编辑 utils/config.local.js，填入你的 API Key\n" +
+        "3. 或者使用云开发模式（推荐）";
+      console.error("❌", errorMsg);
+      reject(new Error(errorMsg));
+      return;
+    }
+
     const prompt = buildPrompt(userText);
 
     // 根据provider选择不同的请求格式
@@ -122,6 +135,13 @@ function callDirectAPI(userText) {
       "Content-Type": "application/json",
       Authorization: `Bearer ${CONFIG.direct.apiKey}`,
     };
+
+    // 调试信息（不输出完整 API Key）
+    console.log(
+      "🔑 API Key 已配置:",
+      CONFIG.direct.apiKey.substring(0, 10) + "..."
+    );
+    console.log("🌐 API URL:", CONFIG.direct.apiUrl);
 
     if (CONFIG.model.provider === "qwen") {
       // 通义千问格式
@@ -162,7 +182,9 @@ function callDirectAPI(userText) {
       header: headers,
       data: requestData,
       success: (res) => {
-        console.log("📡 API完整响应:", JSON.stringify(res, null, 2));
+        console.log("📡 API响应状态码:", res.statusCode);
+        console.log("📡 API响应数据:", JSON.stringify(res.data, null, 2));
+
         if (res.statusCode === 200 && res.data) {
           if (res.data.code) {
             reject(new Error(res.data.message || `API错误: ${res.data.code}`));
@@ -179,6 +201,20 @@ function callDirectAPI(userText) {
             console.error("❌ 解析响应失败:", error);
             reject(new Error(`解析响应失败: ${error.message}`));
           }
+        } else if (res.statusCode === 401) {
+          // 401 认证失败，提供详细的错误信息
+          const errorMsg =
+            "API 认证失败（HTTP 401）\n\n" +
+            "可能的原因：\n" +
+            "1. API Key 无效或已过期\n" +
+            "2. API Key 格式错误\n" +
+            "3. API Key 未正确配置\n\n" +
+            "请检查：\n" +
+            "- utils/config.local.js 中的 apiKey 是否正确\n" +
+            "- API Key 是否有效（可在对应平台测试）\n" +
+            "- 是否使用了正确的 API Key（DeepSeek/通义千问等）";
+          console.error("❌", errorMsg);
+          reject(new Error(errorMsg));
         } else {
           const errorMsg =
             res.data?.message ||

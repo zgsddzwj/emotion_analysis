@@ -13,9 +13,16 @@ let localConfig = {};
 try {
   // config.local.js 不会被提交到 Git，用于存储敏感信息
   localConfig = require("./config.local.js");
+  console.log("✅ 已加载 config.local.js 配置文件");
 } catch (e) {
   // config.local.js 不存在时忽略错误
-  console.log("未找到 config.local.js，使用默认配置");
+  console.log("⚠️ 未找到 config.local.js，使用默认配置");
+  console.log(
+    "💡 提示：如果使用 direct 模式，请创建 config.local.js 并填入 API Key"
+  );
+  console.log(
+    "   命令：cp utils/config.local.js.example utils/config.local.js"
+  );
 }
 
 // 默认配置
@@ -90,5 +97,19 @@ const config = {
     ...(localConfig.model || {}),
   },
 };
+
+// 输出配置信息（调试用，不输出敏感信息）
+if (config.llmMode === "direct") {
+  const apiKeyStatus = config.directAPI?.apiKey
+    ? `已配置 (${config.directAPI.apiKey.substring(0, 10)}...)`
+    : "未配置";
+  console.log("📋 当前配置：");
+  console.log(`   - 接入方式: ${config.llmMode}`);
+  console.log(`   - API Key: ${apiKeyStatus}`);
+  console.log(`   - API URL: ${config.directAPI?.apiUrl || "未配置"}`);
+  if (!config.directAPI?.apiKey || config.directAPI.apiKey.trim() === "") {
+    console.warn("⚠️ 警告：API Key 未配置，直接 API 调用将失败！");
+  }
+}
 
 module.exports = config;
