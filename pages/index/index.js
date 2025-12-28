@@ -8,8 +8,6 @@ Page({
     isAnalyzing: false,
     showReminder: false, // 是否显示提醒
     reminderMessage: "", // 提醒消息
-    placeholderText:
-      "最近让我最难受的是……\n今天发生了一件让我……的事\n我最近总是感到……",
   },
 
   onLoad() {
@@ -142,7 +140,7 @@ Page({
           showReminder: true,
           reminderMessage:
             analysis.reminderMessage ||
-            "这里是缓一下，一个专门提供情绪支持的空间。如果你有情绪困扰或需要倾诉，我很愿意倾听。",
+            "这里是当下状态，一个专门提供情绪支持的空间。如果你有情绪困扰或需要倾诉，我很愿意倾听。",
         });
         return;
       }
@@ -153,7 +151,7 @@ Page({
           showReminder: true,
           reminderMessage:
             analysis.friendlyMessage ||
-            "你好！这里是缓一下，如果你有什么情绪困扰，可以随时告诉我。",
+            "你好！这里是当下状态，如果你有什么情绪困扰，可以随时告诉我。",
         });
         return;
       }

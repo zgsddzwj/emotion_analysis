@@ -58,7 +58,7 @@
   </view>
 
   <view class="analysis-footer">
-    <button class="next-btn" bindtap="nextTap">我想知道接下来怎么做</button>
+    <button class="next-btn" bindtap="nextTap">接下来怎么做</button>
     <view class="analysis-hint">这些只是可能的原因，你的感受是真实的</view>
   </view>
 </view>

@@ -9,7 +9,7 @@
     "pages/emotionStats/emotionStats"
   ],
   "window": {
-    "navigationBarTitleText": "缓一下",
+    "navigationBarTitleText": "当下状态",
     "navigationBarBackgroundColor": "#FAF8F5",
     "navigationBarTextStyle": "black",
     "backgroundColor": "#FAF8F5",

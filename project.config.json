@@ -1,5 +1,5 @@
 {
-  "description": "缓一下小程序",
+  "description": "当下状态小程序",
   "packOptions": {
     "ignore": [],
     "include": []
@@ -51,5 +51,5 @@
     "tabIndent": "insertSpaces",
     "tabSize": 2
   },
-  "appid": "wx0a86571d2865bb6f"
+  "appid": "wx782264afb8bd31c4"
 }

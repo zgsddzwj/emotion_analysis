@@ -35,7 +35,7 @@
       <view class="textarea-wrapper">
         <textarea 
           class="emotion-input" 
-          placeholder=""
+          placeholder="我最近总是感到……"
           value="{{inputText}}"
           bindinput="onInput"
           maxlength="500"
@@ -43,11 +43,7 @@
           show-confirm-bar="{{false}}"
           auto-height="{{false}}"
         ></textarea>
-        <view class="custom-placeholder" wx:if="{{!inputText}}">
-          <text class="placeholder-line">最近让我最难受的是……</text>
-          <text class="placeholder-line">今天发生了一件让我……的事</text>
-          <text class="placeholder-line">我最近总是感到……</text>
-        </view>
+        
       </view>
       <view class="input-footer">
         <text class="char-count">{{inputText.length}}/500</text>

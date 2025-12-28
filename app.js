@@ -7,10 +7,22 @@ App({
       if (!wx.cloud) {
         console.error("请使用 2.2.3 或以上的基础库以使用云能力");
       } else {
+        // 如果环境ID未配置，使用动态环境（自动使用当前环境）
+        const envId =
+          config.cloud.env && config.cloud.env !== "your-cloud-env-id"
+            ? config.cloud.env
+            : undefined; // undefined 表示使用动态环境
+
         wx.cloud.init({
-          env: config.cloud.env, // 云开发环境ID
+          env: envId, // 云开发环境ID，如果未配置则使用动态环境
           traceUser: true,
         });
+
+        if (!envId) {
+          console.warn(
+            "⚠️ 云开发环境ID未配置，使用动态环境。建议配置固定环境ID以提高稳定性。"
+          );
+        }
       }
     }
 

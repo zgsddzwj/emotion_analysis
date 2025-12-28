@@ -7,7 +7,7 @@
     </view>
     
     <!-- 产品名称 -->
-    <view class="product-name">缓一下</view>
+    <view class="product-name">当下状态</view>
     
     <!-- 主标语 -->
     <view class="main-slogan">这里可以接住你的情绪</view>

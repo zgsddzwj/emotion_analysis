@@ -129,7 +129,7 @@ Page({
         wx.showToast({
           title:
             analysis.reminderMessage ||
-            "这里是缓一下，一个专门提供情绪支持的空间。如果你有情绪困扰或需要倾诉，我很愿意倾听。",
+            "这里是当下状态，一个专门提供情绪支持的空间。如果你有情绪困扰或需要倾诉，我很愿意倾听。",
           icon: "none",
           duration: 3000,
         });
@@ -141,7 +141,7 @@ Page({
         wx.hideLoading();
         this.setData({ isRegenerating: false });
         wx.showToast({
-          title: analysis.friendlyMessage || "你好！这里是缓一下",
+          title: analysis.friendlyMessage || "你好！这里是当下状态",
           icon: "none",
           duration: 3000,
         });
