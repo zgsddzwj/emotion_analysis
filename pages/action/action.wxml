@@ -38,8 +38,8 @@
     <button class="regenerate-btn" bindtap="regenerateTap" loading="{{isRegenerating}}" disabled="{{isRegenerating}}">
       {{isRegenerating ? '重新生成...' : '🔄 重新生成'}}
     </button>
-    <button class="know-btn" bindtap="knowTap">我知道了</button>
     <button class="record-btn" bindtap="recordTap">记录下来</button>
+    <button class="know-btn" bindtap="knowTap">我知道了</button>
   </view>
 </view>
 

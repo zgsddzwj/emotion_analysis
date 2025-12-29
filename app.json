@@ -9,7 +9,7 @@
     "pages/emotionStats/emotionStats"
   ],
   "window": {
-    "navigationBarTitleText": "当下状态",
+    "navigationBarTitleText": "情绪记录本",
     "navigationBarBackgroundColor": "#FAF8F5",
     "navigationBarTextStyle": "black",
     "backgroundColor": "#FAF8F5",

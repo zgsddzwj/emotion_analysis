@@ -235,6 +235,22 @@
 }
 
 .know-btn {
+  background-color: transparent;
+  color: #8b7355;
+  border: 2rpx solid #e8d5c4;
+  border-radius: 20rpx;
+  padding: 20rpx 16rpx;
+  font-size: 26rpx;
+  flex: 1;
+  line-height: 1.5;
+}
+
+.know-btn:active {
+  background-color: rgba(232, 213, 196, 0.1);
+  transform: scale(0.98);
+}
+
+.record-btn {
   background: linear-gradient(135deg, #e8d5c4 0%, #d4c4b0 100%);
   color: #5c4a3a;
   border: none;
@@ -247,23 +263,7 @@
   box-shadow: 0 4rpx 16rpx rgba(232, 213, 196, 0.3);
 }
 
-.know-btn:active {
+.record-btn:active {
   transform: scale(0.98);
   box-shadow: 0 2rpx 8rpx rgba(232, 213, 196, 0.3);
-}
-
-.record-btn {
-  background-color: transparent;
-  color: #8b7355;
-  border: 2rpx solid #e8d5c4;
-  border-radius: 20rpx;
-  padding: 20rpx 16rpx;
-  font-size: 26rpx;
-  flex: 1;
-  line-height: 1.5;
-}
-
-.record-btn:active {
-  background-color: rgba(232, 213, 196, 0.1);
-  transform: scale(0.98);
 }

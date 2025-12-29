@@ -181,7 +181,7 @@ function buildPrompt(userText) {
 情况2：如果是非情绪内容（isNonEmotionContent: true）：
 {
   "isNonEmotionContent": true,
-  "reminderMessage": "友善的提醒消息，例如：这里是当下状态，一个专门提供情绪支持的空间。如果你有情绪困扰或需要倾诉，我很愿意倾听。"
+  "reminderMessage": "友善的提醒消息，例如：这里是情绪记录本，一个专门提供情绪支持的空间。如果你有情绪困扰或需要倾诉，我很愿意倾听。"
 }
 
 情况3：如果是情绪问题（isEmotionIssue: true）：
@@ -256,7 +256,7 @@ function parseLLMResponse(response) {
     if (data.isNonEmotionContent === true) {
       const reminderMessage =
         data.reminderMessage ||
-        "这里是当下状态，一个专门提供情绪支持的空间。如果你有情绪困扰或需要倾诉，我很愿意倾听。";
+        "这里是情绪记录本，一个专门提供情绪支持的空间。如果你有情绪困扰或需要倾诉，我很愿意倾听。";
       return {
         isNonEmotionContent: true,
         reminderMessage: reminderMessage,
@@ -270,7 +270,7 @@ function parseLLMResponse(response) {
     if (!isEmotionIssue) {
       const friendlyMessage =
         data.friendlyMessage ||
-        "你好！这里是当下状态，如果你有什么情绪困扰，可以随时告诉我。";
+        "你好！这里是情绪记录本，如果你有什么情绪困扰，可以随时告诉我。";
       return {
         isEmotionIssue: false,
         friendlyMessage: friendlyMessage,

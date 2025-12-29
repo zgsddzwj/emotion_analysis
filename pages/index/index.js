@@ -140,7 +140,7 @@ Page({
           showReminder: true,
           reminderMessage:
             analysis.reminderMessage ||
-            "这里是当下状态，一个专门提供情绪支持的空间。如果你有情绪困扰或需要倾诉，我很愿意倾听。",
+            "这里是情绪记录本，一个专门提供情绪支持的空间。如果你有情绪困扰或需要倾诉，我很愿意倾听。",
         });
         return;
       }
@@ -151,7 +151,7 @@ Page({
           showReminder: true,
           reminderMessage:
             analysis.friendlyMessage ||
-            "你好！这里是当下状态，如果你有什么情绪困扰，可以随时告诉我。",
+            "你好！这里是情绪记录本，如果你有什么情绪困扰，可以随时告诉我。",
         });
         return;
       }
