@@ -43,9 +43,10 @@ const CONFIG = {
 /**
  * 调用大模型进行情绪分析
  * @param {string} userText - 用户输入的情绪文本
+ * @param {Function} onProgress - 进度回调函数，用于流式输出提示
  * @returns {Promise<Object>} 情绪分析结果
  */
-function analyzeEmotionWithLLM(userText) {
+function analyzeEmotionWithLLM(userText, onProgress) {
   return new Promise((resolve, reject) => {
     if (!userText || !userText.trim()) {
       reject(new Error("输入文本不能为空"));
@@ -54,13 +55,13 @@ function analyzeEmotionWithLLM(userText) {
 
     switch (CONFIG.mode) {
       case "cloud":
-        callCloudFunction(userText).then(resolve).catch(reject);
+        callCloudFunction(userText, onProgress).then(resolve).catch(reject);
         break;
       case "direct":
-        callDirectAPI(userText).then(resolve).catch(reject);
+        callDirectAPI(userText, onProgress).then(resolve).catch(reject);
         break;
       case "proxy":
-        callProxyAPI(userText).then(resolve).catch(reject);
+        callProxyAPI(userText, onProgress).then(resolve).catch(reject);
         break;
       default:
         reject(new Error("未配置接入方式"));
@@ -70,9 +71,43 @@ function analyzeEmotionWithLLM(userText) {
 
 /**
  * 通过云函数调用大模型
+ * @param {string} userText - 用户输入文本
+ * @param {Function} onProgress - 进度回调函数
  */
-function callCloudFunction(userText) {
+function callCloudFunction(userText, onProgress) {
   return new Promise((resolve, reject) => {
+    // 发送进度提示（模拟流式输出体验）
+    const progressTips = [
+      { delay: 0, tip: "正在连接云服务..." },
+      { delay: 300, tip: "正在理解你的感受..." },
+      { delay: 800, tip: "我在认真倾听..." },
+      { delay: 1300, tip: "你的情绪值得被看见..." },
+      { delay: 1800, tip: "让我为你整理一下..." },
+      { delay: 2300, tip: "我在为你准备回应..." },
+      { delay: 2800, tip: "你的感受很重要..." },
+      { delay: 3300, tip: "我在仔细思考..." },
+      { delay: 3800, tip: "让我为你找到合适的建议..." },
+      { delay: 4300, tip: "你的情绪正在被理解..." },
+      { delay: 4800, tip: "我在为你准备温暖的回应..." },
+      { delay: 5300, tip: "你的每一句话都很重要..." },
+      { delay: 5800, tip: "让我为你整理情绪..." },
+      { delay: 6300, tip: "我在认真分析..." },
+      { delay: 6800, tip: "你的感受正在被看见..." },
+      { delay: 7300, tip: "让我为你准备一些建议..." },
+      { delay: 7800, tip: "我在为你思考..." },
+      { delay: 8300, tip: "你的情绪值得被认真对待..." },
+    ];
+
+    if (onProgress) {
+      progressTips.forEach(({ delay, tip }) => {
+        setTimeout(() => {
+          if (onProgress) {
+            onProgress(tip);
+          }
+        }, delay);
+      });
+    }
+
     wx.cloud.callFunction({
       name: CONFIG.cloud.functionName,
       data: {
@@ -80,8 +115,22 @@ function callCloudFunction(userText) {
         model: CONFIG.model,
       },
       success: (res) => {
+        // 发送进度提示
+        if (onProgress) {
+          onProgress("正在处理响应...");
+          setTimeout(() => {
+            if (onProgress) onProgress("正在解析结果...");
+          }, 200);
+        }
         if (res.result && res.result.success) {
-          resolve(parseLLMResponse(res.result.data));
+          const result = parseLLMResponse(res.result.data);
+          // 发送完成提示
+          if (onProgress) {
+            setTimeout(() => {
+              if (onProgress) onProgress("完成了！");
+            }, 300);
+          }
+          resolve(result);
         } else {
           reject(new Error(res.result?.error || "云函数调用失败"));
         }
@@ -111,8 +160,10 @@ function callCloudFunction(userText) {
 
 /**
  * 直接调用API（需要配置合法域名）
+ * @param {string} userText - 用户输入文本
+ * @param {Function} onProgress - 进度回调函数
  */
-function callDirectAPI(userText) {
+function callDirectAPI(userText, onProgress) {
   return new Promise((resolve, reject) => {
     // 检查 API Key 是否配置
     if (!CONFIG.direct.apiKey || CONFIG.direct.apiKey.trim() === "") {
@@ -163,6 +214,8 @@ function callDirectAPI(userText) {
       headers["X-DashScope-SSE"] = "disable";
     } else {
       // OpenAI/DeepSeek格式
+      // 注意：小程序不支持 SSE 流式输出，所以不使用 stream: true
+      // 但会通过进度回调提供友好的等待体验
       requestData = {
         model: CONFIG.model.modelName,
         messages: [
@@ -173,7 +226,40 @@ function callDirectAPI(userText) {
         ],
         temperature: CONFIG.model.temperature,
         max_tokens: CONFIG.model.maxTokens,
+        stream: false, // 小程序不支持 SSE，使用非流式
       };
+    }
+
+    // 发送进度提示（模拟流式输出体验）
+    const progressTips = [
+      { delay: 0, tip: "正在连接服务器..." },
+      { delay: 300, tip: "正在理解你的感受..." },
+      { delay: 800, tip: "我在认真倾听..." },
+      { delay: 1300, tip: "你的情绪值得被看见..." },
+      { delay: 1800, tip: "让我为你整理一下..." },
+      { delay: 2300, tip: "我在为你准备回应..." },
+      { delay: 2800, tip: "你的感受很重要..." },
+      { delay: 3300, tip: "我在仔细思考..." },
+      { delay: 3800, tip: "让我为你找到合适的建议..." },
+      { delay: 4300, tip: "你的情绪正在被理解..." },
+      { delay: 4800, tip: "我在为你准备温暖的回应..." },
+      { delay: 5300, tip: "你的每一句话都很重要..." },
+      { delay: 5800, tip: "让我为你整理情绪..." },
+      { delay: 6300, tip: "我在认真分析..." },
+      { delay: 6800, tip: "你的感受正在被看见..." },
+      { delay: 7300, tip: "让我为你准备一些建议..." },
+      { delay: 7800, tip: "我在为你思考..." },
+      { delay: 8300, tip: "你的情绪值得被认真对待..." },
+    ];
+
+    if (onProgress) {
+      progressTips.forEach(({ delay, tip }) => {
+        setTimeout(() => {
+          if (onProgress) {
+            onProgress(tip);
+          }
+        }, delay);
+      });
     }
 
     wx.request({
@@ -183,7 +269,11 @@ function callDirectAPI(userText) {
       data: requestData,
       success: (res) => {
         console.log("📡 API响应状态码:", res.statusCode);
-        console.log("📡 API响应数据:", JSON.stringify(res.data, null, 2));
+
+        // 发送进度提示
+        if (onProgress) {
+          onProgress("正在处理响应...");
+        }
 
         if (res.statusCode === 200 && res.data) {
           if (res.data.code) {
@@ -191,11 +281,27 @@ function callDirectAPI(userText) {
             return;
           }
           try {
+            // 发送进度提示
+            if (onProgress) {
+              onProgress("正在处理响应...");
+              setTimeout(() => {
+                if (onProgress) onProgress("正在解析结果...");
+              }, 200);
+            }
+
             const result = parseDirectAPIResponse(res.data);
             console.log(
               "✅ 解析成功，返回结果:",
               JSON.stringify(result, null, 2)
             );
+
+            // 发送完成提示
+            if (onProgress) {
+              setTimeout(() => {
+                if (onProgress) onProgress("完成了！");
+              }, 300);
+            }
+
             resolve(result);
           } catch (error) {
             console.error("❌ 解析响应失败:", error);
@@ -250,8 +356,10 @@ function callDirectAPI(userText) {
 
 /**
  * 通过后端代理调用API
+ * @param {string} userText - 用户输入文本
+ * @param {Function} onProgress - 进度回调函数
  */
-function callProxyAPI(userText) {
+function callProxyAPI(userText, onProgress) {
   return new Promise((resolve, reject) => {
     wx.request({
       url: CONFIG.proxy.apiUrl,

@@ -8,6 +8,8 @@ Page({
     isAnalyzing: false,
     showReminder: false, // 是否显示提醒
     reminderMessage: "", // 提醒消息
+    loadingTip: "", // 加载提示信息
+    loadingTipIndex: 0, // 当前提示索引
   },
 
   onLoad() {
@@ -84,6 +86,53 @@ Page({
     });
   },
 
+  // 友好的等待提示信息（更多更丰富的提示）
+  loadingTips: [
+    "正在理解你的感受...",
+    "我在认真倾听...",
+    "让我为你整理一下...",
+    "你的情绪值得被看见...",
+    "我在为你准备回应...",
+    "稍等片刻，马上就好...",
+    "你的感受很重要...",
+    "我在仔细思考...",
+    "让我为你找到合适的建议...",
+    "你的情绪正在被理解...",
+    "我在为你准备温暖的回应...",
+    "你的每一句话都很重要...",
+    "让我为你整理情绪...",
+    "我在认真分析...",
+    "你的感受正在被看见...",
+    "让我为你准备一些建议...",
+    "我在为你思考...",
+    "你的情绪值得被认真对待...",
+  ],
+
+  // 开始轮播加载提示
+  startLoadingTips() {
+    let index = 0;
+    this.setData({
+      loadingTip: this.loadingTips[index],
+      loadingTipIndex: index,
+    });
+
+    this.loadingTipTimer = setInterval(() => {
+      index = (index + 1) % this.loadingTips.length;
+      this.setData({
+        loadingTip: this.loadingTips[index],
+        loadingTipIndex: index,
+      });
+    }, 1500); // 每1.5秒切换一次，让等待更有趣
+  },
+
+  // 停止轮播加载提示
+  stopLoadingTips() {
+    if (this.loadingTipTimer) {
+      clearInterval(this.loadingTipTimer);
+      this.loadingTipTimer = null;
+    }
+  },
+
   async submitTap() {
     const text = this.data.inputText.trim();
     if (!text) {
@@ -92,6 +141,8 @@ Page({
 
     // 显示加载状态
     this.setData({ isAnalyzing: true });
+    this.startLoadingTips(); // 开始轮播提示
+    
     wx.showLoading({
       title: "正在分析...",
       mask: true,
@@ -102,8 +153,13 @@ Page({
 
       // 根据配置选择使用大模型或本地分析
       if (config.enableLLM) {
-        // 使用大模型分析
-        analysis = await analyzeEmotionWithLLM(text);
+        // 使用大模型分析（支持流式输出）
+        analysis = await analyzeEmotionWithLLM(text, (tip) => {
+          // 流式输出回调，更新提示信息
+          if (tip) {
+            this.setData({ loadingTip: tip });
+          }
+        });
       } else {
         // 使用本地关键词匹配（降级方案）
         analysis = this.analyzeEmotion(text);
@@ -118,7 +174,11 @@ Page({
       };
 
       wx.hideLoading();
-      this.setData({ isAnalyzing: false });
+      this.stopLoadingTips(); // 停止轮播提示
+      this.setData({ 
+        isAnalyzing: false,
+        loadingTip: "" // 清空提示
+      });
 
       // 如果是违法内容，显示拒绝消息
       if (analysis.isIllegalContent === true) {
@@ -169,7 +229,8 @@ Page({
     } catch (error) {
       console.error("情绪分析失败:", error);
       wx.hideLoading();
-      this.setData({ isAnalyzing: false });
+      this.stopLoadingTips(); // 停止轮播提示
+      this.setData({ isAnalyzing: false, loadingTip: "" });
 
       // 显示详细错误信息
       const errorMsg = error.message || "未知错误";

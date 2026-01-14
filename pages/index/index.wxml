@@ -60,7 +60,16 @@
     >
       {{isAnalyzing ? '正在分析...' : '我说完了'}}
     </button>
-    <view class="footer-hint" wx:if="{{!inputText}}">
+    
+    <!-- 友好的加载提示 -->
+    <view class="loading-tip-section" wx:if="{{isAnalyzing && loadingTip}}">
+      <view class="loading-tip-card">
+        <view class="loading-tip-icon">💭</view>
+        <text class="loading-tip-text">{{loadingTip}}</text>
+      </view>
+    </view>
+    
+    <view class="footer-hint" wx:if="{{!inputText && !isAnalyzing}}">
       <text class="hint-text">💚 你的感受值得被看见</text>
     </view>
   </view>
