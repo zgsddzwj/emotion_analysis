@@ -1,0 +1,66 @@
+.help-container {
+  padding: 24rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+  background: #faf8f5;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 16rpx;
+  padding: 20rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(232, 213, 196, 0.3);
+}
+
+.card-title {
+  font-size: 28rpx;
+  color: #5c4a3a;
+  font-weight: 600;
+  margin-bottom: 16rpx;
+}
+
+.help-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14rpx;
+}
+
+.help-item {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+  font-size: 26rpx;
+  color: #5c4a3a;
+}
+
+.help-icon {
+  font-size: 26rpx;
+}
+
+.help-text {
+  flex: 1;
+  line-height: 1.6;
+}
+
+.faq-item {
+  margin-bottom: 12rpx;
+}
+
+.faq-q {
+  display: block;
+  font-size: 26rpx;
+  color: #5c4a3a;
+  font-weight: 600;
+  margin-bottom: 4rpx;
+}
+
+.faq-a {
+  display: block;
+  font-size: 24rpx;
+  color: #7a6a58;
+  line-height: 1.6;
+}

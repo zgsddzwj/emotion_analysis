@@ -1,5 +1,18 @@
 <view class="history-container">
   <view class="history-content">
+    <!-- 搜索 -->
+    <view class="filter-section">
+      <view class="search-box">
+        <input
+          class="search-input"
+          placeholder="搜索关键词或原因"
+          value="{{searchKeyword}}"
+          bindinput="onSearchInput"
+          confirm-type="search"
+        />
+      </view>
+    </view>
+
     <!-- 趋势提示 -->
     <view class="trend-section" wx:if="{{trendText}}">
       <text class="trend-text">{{trendText}}</text>
@@ -52,6 +65,23 @@
 
   <view class="history-footer">
     <button class="back-btn" bindtap="backTap">返回首页</button>
+  </view>
+
+  <!-- 编辑弹窗 -->
+  <view class="edit-mask" wx:if="{{editingIndex >= 0}}">
+    <view class="edit-dialog">
+      <view class="edit-title">编辑记录</view>
+      <textarea
+        class="edit-textarea"
+        value="{{editingText}}"
+        bindinput="onEditingInput"
+        maxlength="500"
+      ></textarea>
+      <view class="edit-actions">
+        <button class="edit-btn cancel" bindtap="cancelEdit">取消</button>
+        <button class="edit-btn confirm" bindtap="saveEdit">保存</button>
+      </view>
+    </view>
   </view>
 </view>
 

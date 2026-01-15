@@ -21,7 +21,18 @@
         <view class="action-emoji-wrapper {{item.isCompleted ? 'completed' : ''}}">
           <text class="action-emoji">{{item.emoji}}</text>
         </view>
-        <text class="action-text">{{item.text}}</text>
+        <view class="action-body">
+          <text class="action-text">{{item.text}}</text>
+          <view class="action-meta">
+            <!-- <text class="reminder-text" wx:if="{{item.reminderText}}">{{item.reminderText}}</text> -->
+            <text class="completed-text" wx:if="{{item.completedAtText}}">
+              已完成 {{item.completedAtText}}
+            </text>
+          </view>
+          <!-- <view class="action-footer-inline">
+            <button class="reminder-btn" data-index="{{idx}}" catchtap="setReminder">设置提醒</button>
+          </view> -->
+        </view>
       </view>
     </view>
 

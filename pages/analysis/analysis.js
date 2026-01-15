@@ -5,6 +5,8 @@ Page({
     userReasons: [], // 用户自己添加的原因
     clarification: "",
     customReasonInput: "", // 用户输入的自定义原因
+    intensityLabel: "",
+    compareText: "",
   },
 
   onLoad() {
@@ -21,6 +23,11 @@ Page({
         reasons: Array.isArray(reasons) ? reasons : [],
         userReasons: Array.isArray(userReasons) ? userReasons : [],
         clarification: currentEmotion.analysis.clarification || "",
+        intensityLabel: this.calculateIntensity(
+          currentEmotion.analysis.emotions || [],
+          reasons
+        ),
+        compareText: this.buildCompareText(app.globalData.emotionHistory || []),
       });
     } else {
       // 如果没有数据，返回首页
@@ -28,6 +35,28 @@ Page({
         url: "/pages/index/index",
       });
     }
+  },
+
+  // 计算情绪强度（简单规则）
+  calculateIntensity(emotions = [], reasons = []) {
+    const emotionCount = emotions.length;
+    const reasonCount = reasons.length;
+    const score = emotionCount * 1.5 + reasonCount * 1;
+    if (score >= 6) return "强烈";
+    if (score >= 3) return "中等";
+    return "轻微";
+  },
+
+  // 与上一条记录做简单对比
+  buildCompareText(history = []) {
+    if (!history || history.length < 2) return "这是你的最新一次记录";
+    const [latest, previous] = history;
+    if (!previous || !previous.analysis) return "这是你的最新一次记录";
+    const prevEmotion =
+      previous.analysis.emotions?.[0]?.label ||
+      previous.emotions?.[0]?.label ||
+      "上一条记录";
+    return `与上一条记录相比，本次情绪与你上次的「${prevEmotion}」有所不同`;
   },
 
   // 用户自定义原因输入

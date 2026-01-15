@@ -1,0 +1,47 @@
+<view class="settings-container">
+  <view class="card">
+    <view class="card-title">偏好设置</view>
+    <view class="setting-row">
+      <view class="setting-label-wrapper">
+        <text class="setting-icon">📳</text>
+        <text class="setting-label">操作震动反馈</text>
+      </view>
+      <switch checked="{{vibrationEnabled}}" bindchange="toggleVibration" color="#e8d5c4"></switch>
+    </view>
+    <view class="setting-row">
+      <view class="setting-label-wrapper">
+        <text class="setting-icon">✨</text>
+        <text class="setting-label">加载动画</text>
+      </view>
+      <switch checked="{{animationEnabled}}" bindchange="toggleAnimation" color="#e8d5c4"></switch>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="card-title">数据管理</view>
+    <view class="setting-row-with-btn">
+      <view class="setting-label-wrapper">
+        <text class="setting-icon">🗑️</text>
+        <view class="setting-label-group">
+          <text class="setting-label">清空本地记录</text>
+          <text class="setting-desc">删除所有已保存的情绪记录</text>
+        </view>
+      </view>
+      <button class="action-btn danger" bindtap="clearLocal">清空</button>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="card-title">反馈与支持</view>
+    <view class="setting-row-with-btn">
+      <view class="setting-label-wrapper">
+        <text class="setting-icon">📧</text>
+        <view class="setting-label-group">
+          <text class="setting-label">邮箱反馈</text>
+          <text class="setting-desc">有任何建议或问题，欢迎联系我们</text>
+        </view>
+      </view>
+      <button class="action-btn" bindtap="copyEmail">复制</button>
+    </view>
+  </view>
+</view>

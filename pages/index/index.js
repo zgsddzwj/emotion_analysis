@@ -10,6 +10,15 @@ Page({
     reminderMessage: "", // 提醒消息
     loadingTip: "", // 加载提示信息
     loadingTipIndex: 0, // 当前提示索引
+    vibrationEnabled: true,
+    quickEmotions: [
+      { emoji: "😔", text: "有点丧" },
+      { emoji: "😰", text: "有点焦虑" },
+      { emoji: "😡", text: "有点生气" },
+      { emoji: "😴", text: "有点累" },
+      { emoji: "😢", text: "想哭" },
+      { emoji: "😕", text: "有点迷茫" },
+    ],
   },
 
   onLoad() {
@@ -21,6 +30,13 @@ Page({
       direct: config.directAPI,
       proxy: config.proxyAPI,
       model: config.model,
+    });
+    const vibrateSetting = wx.getStorageSync("setting_vibration");
+    this.setData({
+      vibrationEnabled:
+        vibrateSetting === "" || vibrateSetting === undefined
+          ? true
+          : !!vibrateSetting,
     });
   },
 
@@ -46,6 +62,21 @@ Page({
 
     // 强制固定 textarea 高度
     this.fixTextareaHeight();
+  },
+
+  // 快捷情绪标签点击
+  onSelectQuickEmotion(e) {
+    const text = e.currentTarget.dataset.text || "";
+    // 如果输入为空，直接填充；否则在末尾追加
+    const prefix = this.data.inputText
+      ? this.data.inputText + (this.data.inputText.endsWith("。") ? "" : "。")
+      : "";
+    const newText = `${prefix}${text}`;
+    this.setData({
+      inputText: newText,
+      showReminder: false,
+      reminderMessage: "",
+    });
   },
 
   // 强制固定 textarea 高度
@@ -83,6 +114,18 @@ Page({
   goToHistory() {
     wx.navigateTo({
       url: "/pages/history/history",
+    });
+  },
+
+  goSettings() {
+    wx.navigateTo({
+      url: "/pages/settings/settings",
+    });
+  },
+
+  goHelp() {
+    wx.navigateTo({
+      url: "/pages/help/help",
     });
   },
 
@@ -142,7 +185,10 @@ Page({
     // 显示加载状态
     this.setData({ isAnalyzing: true });
     this.startLoadingTips(); // 开始轮播提示
-    
+    if (this.data.vibrationEnabled) {
+      wx.vibrateShort({ type: "light" });
+    }
+
     wx.showLoading({
       title: "正在分析...",
       mask: true,
@@ -175,9 +221,9 @@ Page({
 
       wx.hideLoading();
       this.stopLoadingTips(); // 停止轮播提示
-      this.setData({ 
+      this.setData({
         isAnalyzing: false,
-        loadingTip: "" // 清空提示
+        loadingTip: "", // 清空提示
       });
 
       // 如果是违法内容，显示拒绝消息

@@ -1,5 +1,14 @@
 <view class="analysis-container">
   <view class="analysis-content">
+    <!-- 情绪强度与对比 -->
+    <view class="intensity-section">
+      <view class="intensity-chip">
+        <text class="chip-label">情绪强度</text>
+        <text class="chip-value">{{intensityLabel}}</text>
+      </view>
+      <view class="compare-text">{{compareText}}</view>
+    </view>
+
     <!-- 情绪标签区 -->
     <view class="emotion-tags" wx:if="{{emotions.length > 0}}">
       <view class="tag-title">你的情绪</view>

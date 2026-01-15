@@ -26,16 +26,33 @@
     </view>
   </view>
   
+  <!-- 快捷情绪标签 -->
+  <view class="quick-emotions-section" wx:if="{{!inputText}}">
+    <view class="quick-list">
+      <view
+        class="quick-chip"
+        wx:for="{{quickEmotions}}"
+        wx:key="text"
+        data-text="{{item.text}}"
+        bindtap="onSelectQuickEmotion"
+      >
+        <text class="chip-emoji">{{item.emoji}}</text>
+        <text class="chip-text">{{item.text}}</text>
+      </view>
+    </view>
+  </view>
+
   <view class="input-section">
     <view class="input-wrapper">
       <view class="input-label">
         <text class="label-icon">✍️</text>
         <text class="label-text">说说你的感受</text>
       </view>
+
       <view class="textarea-wrapper">
         <textarea 
           class="emotion-input" 
-          placeholder="我最近总是感到……"
+          placeholder="写下此刻的感受，越具体越好"
           value="{{inputText}}"
           bindinput="onInput"
           maxlength="500"
@@ -43,7 +60,6 @@
           show-confirm-bar="{{false}}"
           auto-height="{{false}}"
         ></textarea>
-        
       </view>
       <view class="input-footer">
         <text class="char-count">{{inputText.length}}/500</text>
@@ -71,6 +87,12 @@
     
     <view class="footer-hint" wx:if="{{!inputText && !isAnalyzing}}">
       <text class="hint-text">💚 你的感受值得被看见</text>
+    </view>
+
+    <view class="helper-links">
+      <text class="link-text" bindtap="goSettings">设置</text>
+      <text class="link-divider">·</text>
+      <text class="link-text" bindtap="goHelp">帮助</text>
     </view>
   </view>
 </view>

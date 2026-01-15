@@ -43,6 +43,24 @@
   margin-top: 8rpx;
 }
 
+/* 搜索区域 */
+.filter-section {
+  margin-bottom: 20rpx;
+}
+
+.search-box {
+  background: #f8f5f1;
+  border-radius: 16rpx;
+  padding: 10rpx 16rpx;
+  border: 1px solid rgba(232, 213, 196, 0.6);
+}
+
+.search-input {
+  width: 100%;
+  font-size: 26rpx;
+  color: #5c4a3a;
+}
+
 /* 情绪统计 */
 .stats-section {
   background-color: #ffffff;
@@ -214,6 +232,7 @@
   text-align: right;
 }
 
+
 /* 空状态 */
 .empty-state {
   text-align: center;
@@ -233,10 +252,96 @@
   color: #a69b8c;
 }
 
+/* 编辑弹窗 */
+.edit-mask {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.edit-dialog {
+  width: 86%;
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 24rpx;
+  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.12);
+}
+
+.edit-title {
+  font-size: 30rpx;
+  color: #5c4a3a;
+  font-weight: 600;
+  margin-bottom: 16rpx;
+}
+
+.edit-textarea {
+  width: 100%;
+  min-height: 200rpx;
+  max-height: 320rpx;
+  border: 1px solid rgba(232, 213, 196, 0.7);
+  border-radius: 14rpx;
+  padding: 16rpx;
+  font-size: 26rpx;
+  color: #5c4a3a;
+  box-sizing: border-box;
+  background: #fdf9f5;
+}
+
+.edit-actions {
+  margin-top: 18rpx;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12rpx;
+}
+
+.edit-btn {
+  padding: 14rpx 20rpx;
+  border-radius: 14rpx;
+  font-size: 26rpx;
+  min-width: 140rpx;
+}
+
+.edit-btn.cancel {
+  background: #f5efe8;
+  color: #5c4a3a;
+  border: 1px solid rgba(232, 213, 196, 0.6);
+}
+
+.edit-btn.confirm {
+  background: linear-gradient(135deg, #e8d5c4 0%, #d4c4b0 100%);
+  color: #5c4a3a;
+  border: none;
+}
+
 .history-footer {
   width: 100%;
   padding-top: 20rpx;
   flex-shrink: 0;
+}
+
+.footer-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+
+.secondary-btn {
+  background-color: #f5efe8;
+  color: #5c4a3a;
+  border: 1px solid rgba(232, 213, 196, 0.6);
+  border-radius: 24px;
+  padding: 18rpx 40rpx;
+  font-size: 28rpx;
+  font-weight: 500;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .back-btn {

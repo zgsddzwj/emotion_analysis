@@ -3,6 +3,10 @@ Page({
     records: [],
     trendText: "",
     trendStats: null, // 趋势统计数据
+    originalRecords: [],
+    searchKeyword: "",
+    editingIndex: -1,
+    editingText: "",
   },
 
   onLoad() {
@@ -52,9 +56,53 @@ Page({
       return record;
     });
 
-    this.setData({
-      records: normalizedHistory,
+    // 生成最终记录
+    const records = normalizedHistory.map((record) => ({
+      ...record,
+      date:
+        record.timestamp &&
+        new Date(record.timestamp).toLocaleDateString("zh-CN", {
+          month: "2-digit",
+          day: "2-digit",
+        }),
+    }));
+
+    this.setData(
+      {
+        originalRecords: records,
+      },
+      () => {
+        this.applyFilters();
+      }
+    );
+  },
+
+  // 搜索
+  applyFilters() {
+    const { originalRecords, searchKeyword } = this.data;
+    const keyword = searchKeyword.trim().toLowerCase();
+
+    if (!keyword) {
+      this.setData({ records: originalRecords });
+      return;
+    }
+
+    const filtered = originalRecords.filter((r) => {
+      const text = (r.text || "").toLowerCase();
+      const reasons = (r.analysis?.reasons || []).join(" ").toLowerCase();
+      return text.includes(keyword) || reasons.includes(keyword);
     });
+
+    this.setData({ records: filtered });
+  },
+
+  onSearchInput(e) {
+    this.setData(
+      {
+        searchKeyword: e.detail.value,
+      },
+      () => this.applyFilters()
+    );
   },
 
   calculateTrend() {
@@ -167,6 +215,97 @@ Page({
     });
   },
 
+  // 编辑记录
+  editRecord(e) {
+    const index = e.currentTarget.dataset.index;
+    const record = this.data.records[index];
+    if (!record) return;
+    this.setData({
+      editingIndex: index,
+      editingText: record.text || "",
+    });
+  },
+
+  onEditingInput(e) {
+    this.setData({ editingText: e.detail.value });
+  },
+
+  saveEdit() {
+    const { editingIndex, editingText, records, originalRecords } = this.data;
+    if (editingIndex < 0) return;
+    const newText = editingText.trim();
+    const updatedRecords = records.map((r, idx) =>
+      idx === editingIndex ? { ...r, text: newText } : r
+    );
+
+    // 同步回原始数据
+    const target = records[editingIndex];
+    const globalIndex = originalRecords.findIndex(
+      (item) => item.timestamp === target.timestamp
+    );
+    if (globalIndex >= 0) {
+      originalRecords[globalIndex].text = newText;
+    }
+
+    // 保存到全局存储
+    const app = getApp();
+    app.globalData.emotionHistory = originalRecords;
+    app.saveEmotionHistory && app.saveEmotionHistory();
+
+    this.setData({
+      records: updatedRecords,
+      originalRecords,
+      editingIndex: -1,
+      editingText: "",
+    });
+  },
+
+  cancelEdit() {
+    this.setData({
+      editingIndex: -1,
+      editingText: "",
+    });
+  },
+
+  deleteRecord(e) {
+    const index = e.currentTarget.dataset.index;
+    const record = this.data.records[index];
+    if (!record) return;
+
+    wx.showModal({
+      title: "确认删除",
+      content: "删除后不可恢复，确定删除吗？",
+      confirmText: "删除",
+      confirmColor: "#d24d4d",
+      success: (res) => {
+        if (res.confirm) {
+          const filteredRecords = this.data.records.filter(
+            (_, idx) => idx !== index
+          );
+          const originalRecords = this.data.originalRecords.filter(
+            (item) => item.timestamp !== record.timestamp
+          );
+
+          // 保存到全局存储
+          const app = getApp();
+          app.globalData.emotionHistory = originalRecords;
+          app.saveEmotionHistory && app.saveEmotionHistory();
+
+          this.setData(
+            {
+              records: filteredRecords,
+              originalRecords,
+            },
+            () => {
+              this.calculateTrend();
+            }
+          );
+        }
+      },
+    });
+  },
+
+
   // 查看详情
   viewDetail(e) {
     const index = e.currentTarget.dataset.index;
@@ -175,7 +314,7 @@ Page({
     if (record) {
       // 将记录数据传递到详情页
       wx.navigateTo({
-        url: `/pages/detail/detail?index=${index}`,
+        url: `/pages/detail/detail?index=${index}&ts=${record.timestamp || ""}`,
       });
     }
   },

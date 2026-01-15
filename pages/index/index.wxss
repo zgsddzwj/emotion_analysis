@@ -178,6 +178,45 @@
   font-weight: 300;
 }
 
+/* 快捷情绪标签 */
+.quick-emotions-section {
+  margin-bottom: 16rpx;
+  flex-shrink: 0;
+}
+
+.quick-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+}
+
+.quick-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8rpx;
+  padding: 12rpx 16rpx;
+  border-radius: 999rpx;
+  background: #f5efe8;
+  color: #5c4a3a;
+  font-size: 24rpx;
+  border: 1px solid rgba(232, 213, 196, 0.6);
+  transition: all 0.2s ease;
+}
+
+.quick-chip:active {
+  transform: scale(0.98);
+  background: #efe5da;
+}
+
+.chip-emoji {
+  font-size: 26rpx;
+}
+
+.chip-text {
+  font-size: 24rpx;
+}
+
+
 .input-section {
   width: 100%;
   height: 420rpx;
@@ -185,14 +224,11 @@
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
 }
 
 .input-wrapper {
   width: 100%;
-  height: 420rpx !important;
-  min-height: 420rpx !important;
-  max-height: 420rpx !important;
+  height: 420rpx;
   display: flex;
   flex-direction: column;
   background-color: #ffffff;
@@ -200,9 +236,7 @@
   padding: 24rpx;
   box-shadow: 0 4rpx 16rpx rgba(232, 213, 196, 0.1);
   border: 1px solid rgba(232, 213, 196, 0.3);
-  flex-shrink: 0;
   box-sizing: border-box;
-  overflow: hidden;
 }
 
 .input-label {
@@ -228,36 +262,26 @@
 
 .textarea-wrapper {
   width: 100%;
-  height: 320rpx !important;
-  min-height: 320rpx !important;
-  max-height: 320rpx !important;
+  height: 320rpx;
   position: relative;
-  flex-shrink: 0;
   overflow: hidden;
   display: block;
   box-sizing: border-box;
+  margin-top: 16rpx;
+  flex-shrink: 0;
 }
 
 .emotion-input {
-  width: 100% !important;
-  height: 320rpx !important;
-  min-height: 320rpx !important;
-  max-height: 320rpx !important;
-  background-color: transparent !important;
-  border: none !important;
-  padding: 0 !important;
+  width: 100%;
+  height: 320rpx;
+  background-color: transparent;
+  border: none;
+  padding: 0;
   font-size: 28rpx;
   color: #5c4a3a;
   line-height: 1.8;
-  box-sizing: border-box !important;
-  position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  bottom: 0 !important;
-  overflow-y: auto !important;
-  resize: none !important;
-  z-index: 2;
+  box-sizing: border-box;
+  overflow-y: auto;
 }
 
 .custom-placeholder {
@@ -351,6 +375,24 @@
   font-size: 22rpx;
   color: #a69b8c;
   opacity: 0.7;
+}
+
+.helper-links {
+  margin-top: 8rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8rpx;
+  font-size: 22rpx;
+  color: #8b7355;
+}
+
+.link-text {
+  text-decoration: underline;
+}
+
+.link-divider {
+  color: #c4b5a3;
 }
 
 /* 友好的加载提示 */

@@ -6,7 +6,9 @@
     "pages/action/action",
     "pages/history/history",
     "pages/detail/detail",
-    "pages/emotionStats/emotionStats"
+    "pages/emotionStats/emotionStats",
+    "pages/settings/settings",
+    "pages/help/help"
   ],
   "window": {
     "navigationBarTitleText": "情绪记录本",

@@ -120,6 +120,51 @@
   line-height: 1.2;
 }
 
+/* 趋势 */
+.trend-section {
+  margin-bottom: 30rpx;
+}
+
+.trend-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+
+.trend-item {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.trend-date {
+  width: 110rpx;
+  font-size: 24rpx;
+  color: #5c4a3a;
+}
+
+.trend-bar {
+  flex: 1;
+  height: 12rpx;
+  background: #f0e8dd;
+  border-radius: 8rpx;
+  overflow: hidden;
+}
+
+.trend-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #e8d5c4 0%, #d4c4b0 100%);
+  border-radius: 8rpx;
+  transition: width 0.3s ease;
+}
+
+.trend-count {
+  width: 80rpx;
+  text-align: right;
+  font-size: 24rpx;
+  color: #8b7355;
+}
+
 /* 情绪分布列表 */
 .emotion-list-section {
   margin-bottom: 40rpx;

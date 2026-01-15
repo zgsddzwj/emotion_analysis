@@ -3,6 +3,7 @@ Page({
     emotionStats: [],
     totalRecords: 0,
     isEmpty: false,
+    weeklyTrend: [],
   },
 
   onLoad() {
@@ -97,10 +98,38 @@ Page({
       percentage: Math.round((count / totalEmotionCount) * 100),
     }));
 
+    // 最近7天趋势
+    const now = Date.now();
+    const sevenDaysAgo = now - 7 * 24 * 60 * 60 * 1000;
+    const dailyMap = {};
+    for (let i = 0; i < 7; i++) {
+      const day = new Date(now - i * 24 * 60 * 60 * 1000);
+      const key = day.toLocaleDateString("zh-CN", {
+        month: "2-digit",
+        day: "2-digit",
+      });
+      dailyMap[key] = 0;
+    }
+    history.forEach((record) => {
+      if (record.timestamp && record.timestamp >= sevenDaysAgo) {
+        const key = new Date(record.timestamp).toLocaleDateString("zh-CN", {
+          month: "2-digit",
+          day: "2-digit",
+        });
+        if (dailyMap[key] !== undefined) {
+          dailyMap[key] += 1;
+        }
+      }
+    });
+    const weeklyTrend = Object.entries(dailyMap)
+      .map(([date, count]) => ({ date, count }))
+      .sort((a, b) => a.date.localeCompare(b.date));
+
     this.setData({
       emotionStats: emotionStats,
       totalRecords: history.length,
       isEmpty: false,
+      weeklyTrend,
     });
   },
 });

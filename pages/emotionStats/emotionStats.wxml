@@ -28,6 +28,23 @@
         </view>
       </view>
 
+      <!-- 最近7天趋势 -->
+      <view class="trend-section">
+        <view class="section-title">
+          <text class="title-text">最近7天趋势</text>
+          <text class="title-hint">每日记录次数</text>
+        </view>
+        <view class="trend-list">
+          <view class="trend-item" wx:for="{{weeklyTrend}}" wx:key="date">
+            <view class="trend-date">{{item.date}}</view>
+            <view class="trend-bar">
+              <view class="trend-bar-fill" style="width: {{item.count * 18}}rpx"></view>
+            </view>
+            <view class="trend-count">{{item.count}}次</view>
+          </view>
+        </view>
+      </view>
+
       <!-- 情绪分布列表 -->
       <view class="emotion-list-section">
         <view class="section-title">

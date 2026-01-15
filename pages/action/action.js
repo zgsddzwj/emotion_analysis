@@ -9,6 +9,7 @@ Page({
     isRegenerating: false, // 是否正在重新生成
     completedCount: 0, // 已选中的数量
     selectedCountText: "", // 选中数量的友好提示文本
+    vibrationEnabled: true,
   },
 
   onLoad() {
@@ -22,6 +23,13 @@ Page({
     });
 
     this.loadData();
+    const vibrateSetting = wx.getStorageSync("setting_vibration");
+    this.setData({
+      vibrationEnabled:
+        vibrateSetting === "" || vibrateSetting === undefined
+          ? true
+          : !!vibrateSetting,
+    });
   },
 
   loadData() {
@@ -34,6 +42,9 @@ Page({
         (action, idx) => ({
           ...action,
           isCompleted: false,
+          completedAt: null,
+          completedAtText: "",
+          reminderText: "",
         })
       );
       const comfortText = currentEmotion.analysis.comfortText || "";
@@ -155,6 +166,9 @@ Page({
       const actions = (analysis.actions || []).map((action, idx) => ({
         ...action,
         isCompleted: false,
+        completedAt: null,
+        completedAtText: "",
+        reminderText: "",
       }));
 
       this.setData({
@@ -186,49 +200,84 @@ Page({
     }
   },
 
+  // 设置提醒（仅保存时间文本，不做后台通知）
+  // 已注释：因为没有具体的提醒功能实现，只有文案提醒没有实际作用
+  // setReminder(e) {
+  //   const index = Number(e.currentTarget.dataset.index);
+  //   const actions = this.data.actions.slice();
+  //   const action = actions[index];
+  //   if (!action) return;
+
+  //   wx.showActionSheet({
+  //     itemList: ["10分钟后提醒", "30分钟后提醒", "1小时后提醒"],
+  //     success: (res) => {
+  //       const now = Date.now();
+  //       let target = now;
+  //       if (res.tapIndex === 0) target = now + 10 * 60 * 1000;
+  //       if (res.tapIndex === 1) target = now + 30 * 60 * 1000;
+  //       if (res.tapIndex === 2) target = now + 60 * 60 * 1000;
+  //       const timeStr = new Date(target).toLocaleTimeString("zh-CN", {
+  //         hour: "2-digit",
+  //         minute: "2-digit",
+  //       });
+  //       action.reminderText = `已设置提醒：${timeStr}`;
+  //       actions[index] = action;
+  //       this.setData({ actions }, () => {
+  //         wx.showToast({
+  //           title: "提醒已设置",
+  //           icon: "none",
+  //         });
+  //       });
+  //     },
+  //   });
+  // },
+
   // 标记行动完成
   completeAction(e) {
-    // 获取索引，确保是数字类型
     const index = Number(e.currentTarget.dataset.index);
     let completedActions = [...(this.data.completedActions || [])].map((i) =>
       Number(i)
-    ); // 确保数组中的值都是数字
+    );
+    const actions = this.data.actions.slice();
+    const action = actions[index];
+    if (!action) return;
 
-    // 检查是否已选中
     const isCompleted = completedActions.includes(index);
-
     if (isCompleted) {
-      // 如果已完成，取消完成
       completedActions = completedActions.filter((i) => i !== index);
+      action.isCompleted = false;
+      action.completedAt = null;
+      action.completedAtText = "";
     } else {
-      // 标记为完成
       completedActions.push(index);
-      // 显示鼓励反馈
+      action.isCompleted = true;
+      action.completedAt = Date.now();
+      action.completedAtText = new Date(action.completedAt).toLocaleTimeString(
+        "zh-CN",
+        {
+          hour: "2-digit",
+          minute: "2-digit",
+        }
+      );
       wx.showToast({
         title: "很棒！你做到了",
         icon: "success",
-        duration: 2000,
+        duration: 1500,
       });
+      if (this.data.vibrationEnabled) {
+        wx.vibrateShort({ type: "light" });
+      }
     }
+    actions[index] = action;
 
-    // 更新状态
     this.setData(
       {
-        completedActions: completedActions,
+        completedActions,
+        actions,
       },
       () => {
-        // 状态更新后，更新 actions 的选中状态
         this.updateActionsCompletedState();
       }
-    );
-
-    console.log(
-      "当前选中状态:",
-      completedActions,
-      "点击的索引:",
-      index,
-      "类型:",
-      typeof index
     );
   },
 

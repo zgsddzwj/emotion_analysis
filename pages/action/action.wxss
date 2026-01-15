@@ -149,6 +149,13 @@
   filter: brightness(1.1);
 }
 
+.action-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10rpx;
+}
+
 .action-text {
   flex: 1;
   font-size: 30rpx;
@@ -165,6 +172,41 @@
 
 .action-card.completed .action-text::after {
   display: none;
+}
+
+.action-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+}
+
+.reminder-text {
+  font-size: 24rpx;
+  color: #8b7355;
+}
+
+.completed-text {
+  font-size: 24rpx;
+  color: #6b5a48;
+}
+
+.action-footer-inline {
+  margin-top: 12rpx;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.reminder-btn {
+  background: #f5efe8;
+  color: #5c4a3a;
+  border: 1px solid rgba(232, 213, 196, 0.6);
+  border-radius: 12rpx;
+  padding: 8rpx 16rpx;
+  font-size: 22rpx;
+  line-height: 1.4;
+  min-width: auto;
+  width: auto;
+  height: auto;
 }
 
 /* 结束语 */

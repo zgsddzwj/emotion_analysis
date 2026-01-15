@@ -210,6 +210,31 @@
   animation: fadeInUp 1s ease-out 0.4s both;
 }
 
+.daily-quote {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 12rpx;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(232, 213, 196, 0.4);
+  border-radius: 18rpx;
+  padding: 16rpx 20rpx;
+  margin-bottom: 30rpx;
+  max-width: 520rpx;
+  box-shadow: 0 4rpx 12rpx rgba(232, 213, 196, 0.18);
+}
+
+.quote-icon {
+  font-size: 30rpx;
+}
+
+.quote-text {
+  font-size: 26rpx;
+  color: #7a6a58;
+  line-height: 1.6;
+  text-align: left;
+}
+
 .sub-slogan {
   display: flex;
   flex-direction: column;
@@ -286,6 +311,44 @@
   animation: fadeInUp 1s ease-out 1s both;
   position: relative;
   overflow: hidden;
+}
+
+.guide-section {
+  margin-top: 24rpx;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(232, 213, 196, 0.4);
+  border-radius: 20rpx;
+  padding: 18rpx 20rpx;
+  box-shadow: 0 4rpx 12rpx rgba(232, 213, 196, 0.12);
+}
+
+.guide-title {
+  font-size: 26rpx;
+  color: #7a6a58;
+  margin-bottom: 12rpx;
+  font-weight: 600;
+}
+
+.guide-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 10rpx;
+}
+
+.guide-step {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+  font-size: 26rpx;
+  color: #5c4a3a;
+}
+
+.step-icon {
+  font-size: 26rpx;
+}
+
+.step-text {
+  font-size: 26rpx;
 }
 
 .warm-hint::before {

@@ -6,17 +6,25 @@ Page({
 
   onLoad(options) {
     const index = parseInt(options.index) || 0;
+    const ts = options.ts ? Number(options.ts) : null;
     this.setData({ index: index });
-    this.loadRecord(index);
+    this.loadRecord(index, ts);
   },
 
-  loadRecord(index) {
+  loadRecord(index, ts) {
     const app = getApp();
     app.loadEmotionHistory();
     const history = app.globalData.emotionHistory || [];
 
-    if (index >= 0 && index < history.length) {
-      const record = history[index];
+    let record = null;
+    if (ts) {
+      record = history.find((item) => item.timestamp === ts);
+    }
+    if (!record && index >= 0 && index < history.length) {
+      record = history[index];
+    }
+
+    if (record) {
 
       // 兼容旧数据格式
       if (!record.analysis && record.emotions) {
